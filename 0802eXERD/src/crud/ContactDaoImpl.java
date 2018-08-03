@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDaoImpl implements ContactDao {
@@ -153,7 +153,7 @@ public class ContactDaoImpl implements ContactDao {
 			pstmt = conn.prepareStatement("delete from contact where num=?");
 
 			// 물음표의 값을 바인딩
-		
+
 			pstmt.setInt(1, num);
 
 			// SQL 실행
@@ -174,14 +174,80 @@ public class ContactDaoImpl implements ContactDao {
 
 	@Override
 	public List<Contact> allConact() {
-		// TODO Auto-generated method stub
-		return null;
+		// 읽어온 데이터를 저장하기 위한 리스트 생성
+		List<Contact> list = new ArrayList<>();
+		// 데이터베이스 연결을 수행하는 메소드 호출
+		connect();
+
+		try {
+			// contact 테이블에 있는 전체 데이터를 가져오는 SQL 실행 객체를 생성합니다.
+			// select * from contact
+			// select num, name, phone, email, birthday from contact
+			// 둘 다 가능함.
+			pstmt = conn.prepareStatement("select num, name, phone, email, birthday from contact");
+			// select 구문 실행
+			rs = pstmt.executeQuery();
+
+			// 반복문을 이용해서 데이터를 읽어서 리스트에 저장
+			// 저장은 반복문 안에
+			while (rs.next()) {
+				// 하나의 행을 읽어서 DTO에 저장
+				// DTO dto = new DTO();
+				// dto.set컬럼명(rs.get변수타입("컬럼명"));
+				Contact contact = new Contact();
+				contact.setNum(rs.getInt("num"));
+				contact.setName(rs.getString("name"));
+				contact.setPhone(rs.getString("phone"));
+				contact.setEmail(rs.getString("email"));
+				contact.setBirthday(rs.getDate("birthday"));
+
+				// 읽은 데이터를 리스트에 저장
+				list.add(contact);
+			}
+		} catch (Exception e) {
+			// 예외 처리 문장
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			// 연결 끊기
+			close();
+		}
+		return list;
 	}
 
 	@Override
 	public List<Contact> nameConact(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Contact> list = new ArrayList<>();
+		connect();
+		try {
+			// contact 테이블의 name 컬럼에 name의 값이 포함된
+			// 데이터를 조회하는 SQL 만들기
+			pstmt = conn.prepareStatement("select * from contact where name like ?");
+			// 물음표에 데이터 바인딩
+			pstmt.setString(1, "%" + name + "%");
+			//SQL 실행
+			rs = pstmt.executeQuery();
+			//데이터를 읽어서 list에 저장하기
+			while (rs.next()) {
+				// 하나의 행을 읽어서 DTO에 저장
+				// DTO dto = new DTO();
+				// dto.set컬럼명(rs.get변수타입("컬럼명"));
+				Contact contact = new Contact();
+				contact.setNum(rs.getInt("num"));
+				contact.setName(rs.getString("name"));
+				contact.setPhone(rs.getString("phone"));
+				contact.setEmail(rs.getString("email"));
+				contact.setBirthday(rs.getDate("birthday"));
+
+				// 읽은 데이터를 리스트에 저장
+				list.add(contact);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		close();
+		return list;
 	}
 
 }

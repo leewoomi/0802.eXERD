@@ -2,6 +2,7 @@ package crud;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.List;
 
 public class ContactMain {
 
@@ -10,7 +11,7 @@ public class ContactMain {
 		//상위 인터페이스나 클래스 이름으로 변수를 만들고
 		//하위 클래스의 인스턴스를 생성해서 대입합니다.
 		ContactDao dao = new ContactDaoImpl();
-		Contact contact = new Contact();
+		//Contact contact = new Contact();
 //		contact.setNum(1);
 //		contact.setName("박보검");
 //		contact.setPhone("01027839942");
@@ -23,8 +24,19 @@ public class ContactMain {
 //		Date birthDay = new Date(cal.getTimeInMillis());
 //		contact.setBirthday(birthDay);
 		
+		//모든 데이터를 조회하는 메소드 호출
+//		List<Contact> list =dao.allConact();
+//		//System.out.println(list);
+//		for(Contact contact : list) {
+//			System.out.println(contact);
+//		}
 		
-		
+		//이름을 가지고 조회하는 메소드 호출
+		List<Contact> list =dao.nameConact("보");
+		//System.out.println(list);
+		for(Contact contact : list) {
+			System.out.println(contact);
+		}
 		//데이터를 삽입하는 메소드 호출
 //		boolean result = dao.insertContact(contact);
 //		if(result ==true) {
@@ -44,12 +56,12 @@ public class ContactMain {
 		
 		
 		//데이터를 삭제하는 메소드 호출
-		boolean r = dao.deleteContact(2);
-		if(r ==true) {
-			System.out.println("삭제 성공");
-		}else {
-			System.out.println("삭제 실패");
-		}
+//		boolean r = dao.deleteContact(2);
+//		if(r ==true) {
+//			System.out.println("삭제 성공");
+//		}else {
+//			System.out.println("삭제 실패");
+//		}
 	}
 
 }
