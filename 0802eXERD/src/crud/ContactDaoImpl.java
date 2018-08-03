@@ -222,7 +222,7 @@ public class ContactDaoImpl implements ContactDao {
 		try {
 			// contact 테이블의 name 컬럼에 name의 값이 포함된
 			// 데이터를 조회하는 SQL 만들기
-			pstmt = conn.prepareStatement("select * from contact where name like ?");
+			pstmt = conn.prepareStatement("select * from contact where lower(name) like ?");
 			// 물음표에 데이터 바인딩
 			pstmt.setString(1, "%" + name + "%");
 			//SQL 실행
