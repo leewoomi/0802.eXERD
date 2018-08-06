@@ -225,9 +225,9 @@ public class ContactDaoImpl implements ContactDao {
 			pstmt = conn.prepareStatement("select * from contact where lower(name) like ?");
 			// 물음표에 데이터 바인딩
 			pstmt.setString(1, "%" + name + "%");
-			//SQL 실행
+			// SQL 실행
 			rs = pstmt.executeQuery();
-			//데이터를 읽어서 list에 저장하기
+			// 데이터를 읽어서 list에 저장하기
 			while (rs.next()) {
 				// 하나의 행을 읽어서 DTO에 저장
 				// DTO dto = new DTO();
